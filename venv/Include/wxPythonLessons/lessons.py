@@ -3,9 +3,11 @@ GUI interface with wxPython and OpenGL from video lessons
 https://www.youtube.com/watch?v=o02uw9-rRqo&list=PL1P11yPQAo7oOmiQQI35arzpVez6AxrDj&index=8
 """
 
-import time, sys
+import time
+import sys
 
 import wx
+from view.opengl.sphere_ellipse_data3D import Sphere_Ellipse_data_3D
 from wx import glcanvas
 import OpenGL.GL.shaders
 import OpenGL.GL as gl
@@ -182,6 +184,9 @@ class OpenGLCanvas(glcanvas.GLCanvas):
             self.mesh.bind_cube()
             # unsigned int array - indexes in class Geometries, method _cube()
             gl.glDrawElements(gl.GL_TRIANGLES, self.mesh.ci_count, gl.GL_UNSIGNED_INT, None)
+        else:
+            self.spher = Sphere_Ellipse_data_3D(6,6)
+            self.spher.draw_sphere(None)
 
         self.SwapBuffers()
 
@@ -211,7 +216,8 @@ class MyPanel(wx.Panel):
 
         # the sliders
         # wx.SL_VERTICAL - make the slider vertial. wx.SL_AUTOTICKS - visual landmark
-        self.COEFFICIENTS_SLIDERS = (-0.2, -0.2, 0.5)
+        self.COEFFICIENTS_SLIDERS = (-2, -2, 10)
+        #######################################
         self.x_slider = wx.Slider(self, -1, pos=(1130, 180), size=(40, 150), style=wx.SL_VERTICAL | wx.SL_AUTOTICKS,
                                   value=0, minValue=-5, maxValue=5)
         self.y_slider = wx.Slider(self, -1, pos=(1170, 180), size=(40, 150), style=wx.SL_VERTICAL | wx.SL_AUTOTICKS,
@@ -271,7 +277,6 @@ class MyPanel(wx.Panel):
         self.z_slider.SetValue(0)
         self.log_matrix()
         self.canvas.Refresh()
-
 
     def log_matrix(self):
         self.log_text.Clear()
@@ -355,6 +360,9 @@ class MyApp(wx.App):
         return True
 
 
-if __name__ == '__main__':
+def main_func():
     app = MyApp()
     app.MainLoop()
+
+if __name__ == '__main__':
+    main_func()
